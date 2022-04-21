@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Films</string>
+
+    <string name="details">Детали</string>
+
+    <string name="film_name_1">Форсаж 1</string>
+    <string name="film_name_2">Форсаж 2</string>
+    <string name="film_name_3">Форсаж 3</string>
+    <string name="film_name_4">Форсаж 4</string>
+
+    <string name="film_details_1">Описание фильма Форсаж 1</string>
+    <string name="film_details_2">Описание фильма Форсаж 2</string>
+    <string name="film_details_3">Описание фильма Форсаж 3</string>
+    <string name="film_details_4">Описание фильма Форсаж 4</string>
 </resources>
