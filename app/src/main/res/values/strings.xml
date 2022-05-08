@@ -1,15 +1,26 @@
 <resources>
     <string name="app_name">Films</string>
 
-    <string name="details">Детали</string>
+    <string name="details">Details</string>
 
-    <string name="film_name_1">Форсаж 1</string>
-    <string name="film_name_2">Форсаж 2</string>
-    <string name="film_name_3">Форсаж 3</string>
-    <string name="film_name_4">Форсаж 4</string>
+    <string name="film_name_1">Fast and Furious 1</string>
+    <string name="film_name_2">Fast and Furious 2</string>
+    <string name="film_name_3">Fast and Furious 3</string>
+    <string name="film_name_4">Fast and Furious 4</string>
+    <string name="film_name_5">Fast and Furious 5</string>
+    <string name="film_name_6">Fast and Furious 6</string>
+    <string name="film_name_7">Fast and Furious 7</string>
+    <string name="film_name_8">Fast and Furious 8</string>
+    <string name="film_name_9">Fast and Furious 9</string>
 
-    <string name="film_details_1">Описание фильма Форсаж 1</string>
-    <string name="film_details_2">Описание фильма Форсаж 2</string>
-    <string name="film_details_3">Описание фильма Форсаж 3</string>
-    <string name="film_details_4">Описание фильма Форсаж 4</string>
+    <string name="film_details_1">Dominic Toretto is a gang leader who is accused of hijacking trucks and stealing over a million dollars worth of electronic equipment. The FBI sends LAPD officer Brian O\'Conner undercover into Los Angeles' street racing circuit to take down Toretto and his team.</string>
+    <string name="film_details_2">EX LAPD cop Brian O\'Conner (Paul Walker) teams up with his ex-con friend Roman Pearce (Tyrese Gibson) and works with undercover U.S. Customs Service agent Monica Fuentes (Eva Mendes) to bring Miami-based drug lord Carter Verone (Cole Hauser) down.</string>
+    <string name="film_details_3">A teenager becomes a major competitor in the world of drift racing after moving in with his father in Tokyo to avoid a jail sentence in America. An American teenager named Sean Boswell is a loner in school, however he challenges his rival for an illegal street racing, and he totals his car in the end of the race.</string>
+    <string name="film_details_4">When a crime brings them back to L.A., fugitive ex-con Dom Toretto reignites his feud with agent Brian O\'Connor. But as they are forced to confront a shared enemy, Dom and Brian must give in to an uncertain new trust if they hope to outmaneuver him.</string>
+    <string name="film_details_5">Former cop Brian O\'Conner partners with ex-con Dom Toretto on the opposite side of the law. Since Brian and Mia Toretto broke Dom out of custody, they\'ve blown across many borders to elude authorities. Now backed into a corner in Rio de Janeiro, they must pull one last job in order to gain their freedom.</string>
+    <string name="film_details_6">Agent Hobbs (Dwayne Johnson) summons Dom (Vin Diesel) and his crew to London in order to take on a team of mercenary drivers who have caused havoc across a dozen countries in this pedal-to-the-metal installment of the rubber-burning action franchise.</string>
+    <string name="film_details_7">Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother. Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother. Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother.</string>
+    <string name="film_details_8">In the film, Dominic Toretto has settled down with his wife Letty Ortiz, until cyberterrorist Cipher coerces him into working for her and turns him against his team, forcing them to find Dom and take down Cipher.</string>
+    <string name="film_details_9">Fast &amp; Furious 9 tells the story of Dominic Toretto (Vin Diesel) who lives a quiet life with his family. However, the calm begins to be disturbed by the presence of Jakob Toretto (John Cena) who is none other than Dom and Mia\'s brother. Jakob is a very deadly professional assassin.</string>
+
 </resources>
