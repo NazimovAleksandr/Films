@@ -2,6 +2,16 @@
     <string name="app_name">Films</string>
 
     <string name="details">Details</string>
+    <string name="favorite">Favorites</string>
+
+    <string name="like">Like:</string>
+    <string name="comment">Leave a comment on the movie</string>
+    <string name="invite_friend">To invite a friend</string>
+    <string name="email">email</string>
+    <string name="sms">sms</string>
+    <string name="message">message</string>
+
+    <string name="text_exit_dialog">Do you really want to leave?</string>
 
     <string name="film_name_1">Fast and Furious 1</string>
     <string name="film_name_2">Fast and Furious 2</string>
@@ -13,7 +23,7 @@
     <string name="film_name_8">Fast and Furious 8</string>
     <string name="film_name_9">Fast and Furious 9</string>
 
-    <string name="film_details_1">Dominic Toretto is a gang leader who is accused of hijacking trucks and stealing over a million dollars worth of electronic equipment. The FBI sends LAPD officer Brian O\'Conner undercover into Los Angeles' street racing circuit to take down Toretto and his team.</string>
+    <string name="film_details_1">Dominic Toretto is a gang leader who is accused of hijacking trucks and stealing over a million dollars worth of electronic equipment. The FBI sends LAPD officer Brian O\'Conner undercover into Los Angeles\' street racing circuit to take down Toretto and his team.</string>
     <string name="film_details_2">EX LAPD cop Brian O\'Conner (Paul Walker) teams up with his ex-con friend Roman Pearce (Tyrese Gibson) and works with undercover U.S. Customs Service agent Monica Fuentes (Eva Mendes) to bring Miami-based drug lord Carter Verone (Cole Hauser) down.</string>
     <string name="film_details_3">A teenager becomes a major competitor in the world of drift racing after moving in with his father in Tokyo to avoid a jail sentence in America. An American teenager named Sean Boswell is a loner in school, however he challenges his rival for an illegal street racing, and he totals his car in the end of the race.</string>
     <string name="film_details_4">When a crime brings them back to L.A., fugitive ex-con Dom Toretto reignites his feud with agent Brian O\'Connor. But as they are forced to confront a shared enemy, Dom and Brian must give in to an uncertain new trust if they hope to outmaneuver him.</string>

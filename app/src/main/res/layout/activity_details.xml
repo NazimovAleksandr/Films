@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".DetailsActivity">
+        tools:context=".details.DetailsActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/full_image"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Нравится:"
+            android:text="@string/like"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/full_text" />
 
@@ -60,7 +60,7 @@
             android:background="@color/white"
             android:elevation="5dp"
             android:gravity="top"
-            android:hint="Оставьте комментарий к фильму"
+            android:hint="@string/comment"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:minHeight="200dp"
@@ -74,7 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="“Пригласить друга"
+            android:text="@string/invite_friend"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/button_email"
@@ -85,7 +85,7 @@
             android:id="@+id/button_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="email"
+            android:text="@string/email"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_sms"
             app:layout_constraintStart_toStartOf="parent" />
@@ -94,7 +94,7 @@
             android:id="@+id/button_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sms"
+            android:text="@string/sms"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_message"
             app:layout_constraintStart_toEndOf="@id/button_email" />
@@ -103,7 +103,7 @@
             android:id="@+id/button_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="message"
+            android:text="@string/message"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_sms" />

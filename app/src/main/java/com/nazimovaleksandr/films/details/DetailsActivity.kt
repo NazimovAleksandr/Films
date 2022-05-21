@@ -1,10 +1,13 @@
-package com.nazimovaleksandr.films
+package com.nazimovaleksandr.films.details
 
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.nazimovaleksandr.films.R
+import com.nazimovaleksandr.films.main.MainActivity
+import com.nazimovaleksandr.films.main.movie_list.MovieItem
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -22,12 +25,14 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        intent.apply {
-            val image = getIntExtra(MainActivity.KEY_IMAGE, 0)
-            val details = getIntExtra(MainActivity.KEY_DETAILS, 0)
+        supportActionBar?.title = getString(R.string.details)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-            imageFilm.setImageResource(image)
-            detailsFilm.setText(details)
+        intent.apply {
+            val movie = getSerializableExtra(MainActivity.KEY_MOVIE) as MovieItem
+
+            imageFilm.setImageResource(movie.image)
+            detailsFilm.text = movie.details
         }
 
         buttonEmail.setOnClickListener {
@@ -41,7 +46,12 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
         setResult(
             RESULT_OK,
             Intent().apply {
@@ -50,7 +60,7 @@ class DetailsActivity : AppCompatActivity() {
             }
         )
 
-        super.onPause()
+        super.onBackPressed()
     }
 
     private fun sendLink(data: String) {

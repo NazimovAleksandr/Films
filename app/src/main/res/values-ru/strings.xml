@@ -1,8 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Films</string>
 
     <string name="details">Детали</string>
+    <string name="favorite">Избранные</string>
+
+    <string name="like">Нравится:</string>
+    <string name="comment">Оставьте комментарий к фильму</string>
+    <string name="invite_friend">Пригласить друга</string>
+    <string name="email">email</string>
+    <string name="sms">sms</string>
+    <string name="message">message</string>
+
+    <string name="text_exit_dialog">Вы действительно хотите выйти?</string>
 
     <string name="film_name_1">Форсаж 1</string>
     <string name="film_name_2">Форсаж 2</string>

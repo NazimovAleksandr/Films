@@ -1,0 +1,59 @@
+package com.nazimovaleksandr.films.main.movie_list
+
+import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
+import com.nazimovaleksandr.films.R
+import com.nazimovaleksandr.films.databinding.ItemMovieBinding
+
+class MovieItemViewHolder(
+    private val binding: ItemMovieBinding,
+    private val onClickListener: MovieItemOnClickListener
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(movie: MovieItem) {
+        binding.movieImage.setImageResource(movie.image)
+
+        binding.movieName.apply {
+            text = movie.name
+
+            setIsViewedData(movie, context)
+        }
+
+        binding.buttonFavorite.apply {
+            setIsFavoriteData(movie)
+
+            setOnClickListener {
+                onClickListener.onClickIsFavorite(
+                    item = movie,
+                    position = adapterPosition
+                )
+
+                setIsFavoriteData(movie)
+            }
+        }
+
+        binding.movieDetails.setOnClickListener {
+            onClickListener.onClickDetails(
+                item = movie
+            )
+
+            setIsViewedData(movie, it.context)
+        }
+    }
+
+    private fun setIsFavoriteData(movie: MovieItem) {
+        binding.buttonFavorite.setImageResource(
+            if (movie.isFavorite) {
+                R.drawable.ic_favorite_true
+            } else {
+                R.drawable.ic_favorite_false
+            }
+        )
+    }
+
+    private fun setIsViewedData(movie: MovieItem, context: Context) {
+        if (movie.isViewed) {
+            binding.movieName.setTextColor(context.getColor(R.color.purple_200))
+        }
+    }
+}
