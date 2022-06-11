@@ -6,13 +6,14 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/movie_image"
-        android:layout_width="100dp"
-        android:layout_height="166dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/image_1" />
 
     <TextView
@@ -24,12 +25,14 @@
         android:text="@string/film_name_1"
         android:textSize="18sp"
         android:drawablePadding="5dp"
-        android:padding="5dp"
-        app:drawableEndCompat="@drawable/ic_favorite_false"
+        android:paddingHorizontal="5dp"
+        android:textColor="@color/white"
+        android:background="@color/black_alpha_70"
+        android:paddingVertical="10dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_image" />
+        app:layout_constraintBottom_toBottomOf="@id/movie_image" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/button_favorite"
@@ -38,22 +41,10 @@
         android:src="@drawable/ic_favorite_false"
         android:paddingVertical="5dp"
         android:paddingHorizontal="5dp"
-        android:background="@drawable/bg_button_favorite"
+        android:alpha="0.7"
         app:layout_constraintBottom_toBottomOf="@id/movie_name"
         app:layout_constraintEnd_toEndOf="@id/movie_name"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintTop_toTopOf="@id/movie_name" />
-
-    <Button
-        android:id="@+id/movie_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="@string/details"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/movie_image"
-        app:layout_constraintStart_toStartOf="@id/movie_image"
-        app:layout_constraintTop_toBottomOf="@id/movie_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

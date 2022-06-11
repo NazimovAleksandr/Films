@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Films</string>
 
+    <string name="movie">Movie</string>
     <string name="details">Details</string>
     <string name="favorite">Favorites</string>
 
@@ -12,6 +13,9 @@
     <string name="message">message</string>
 
     <string name="text_exit_dialog">Do you really want to leave?</string>
+
+    <string name="text_is_favorite_true">Movie added to favorites list</string>
+    <string name="text_is_favorite_false">Movie removed from favorites list</string>
 
     <string name="film_name_1">Fast and Furious 1</string>
     <string name="film_name_2">Fast and Furious 2</string>
@@ -32,5 +36,9 @@
     <string name="film_details_7">Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother. Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother. Deckard Shaw seeks revenge against Dominic Toretto and his family for his comatose brother.</string>
     <string name="film_details_8">In the film, Dominic Toretto has settled down with his wife Letty Ortiz, until cyberterrorist Cipher coerces him into working for her and turns him against his team, forcing them to find Dom and take down Cipher.</string>
     <string name="film_details_9">Fast &amp; Furious 9 tells the story of Dominic Toretto (Vin Diesel) who lives a quiet life with his family. However, the calm begins to be disturbed by the presence of Jakob Toretto (John Cena) who is none other than Dom and Mia\'s brother. Jakob is a very deadly professional assassin.</string>
+
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
 
 </resources>

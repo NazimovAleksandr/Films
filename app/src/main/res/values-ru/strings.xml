@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Films</string>
 
+    <string name="movie">Фильмы</string>
     <string name="details">Детали</string>
     <string name="favorite">Избранные</string>
 
@@ -12,6 +13,9 @@
     <string name="message">message</string>
 
     <string name="text_exit_dialog">Вы действительно хотите выйти?</string>
+
+    <string name="text_is_favorite_true">Фильм добавлен в список избранных</string>
+    <string name="text_is_favorite_false">Фильм удалён из списка избранных</string>
 
     <string name="film_name_1">Форсаж 1</string>
     <string name="film_name_2">Форсаж 2</string>

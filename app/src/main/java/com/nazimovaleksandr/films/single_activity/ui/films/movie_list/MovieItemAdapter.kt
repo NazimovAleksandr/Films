@@ -1,12 +1,13 @@
-package com.nazimovaleksandr.films.main.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nazimovaleksandr.films.databinding.ItemMovieBinding
 
 class MovieItemAdapter(
-    var movieItemList: List<MovieItem>,
+    private var movieItemList: List<MovieItem>,
     private val onClickListener: MovieItemOnClickListener
 ) : RecyclerView.Adapter<MovieItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
@@ -26,6 +27,23 @@ class MovieItemAdapter(
         val list = movieItemList.toMutableList()
         list.remove(item)
 
+        val diffUtil = MovieItemDiffUtil(movieItemList, list)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+
         movieItemList = list
+
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun addItem(item: MovieItem, position: Int) {
+        val list = movieItemList.toMutableList()
+        list.add(position, item)
+
+        val diffUtil = MovieItemDiffUtil(movieItemList, list)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+
+        movieItemList = list
+
+        diffResult.dispatchUpdatesTo(this)
     }
 }

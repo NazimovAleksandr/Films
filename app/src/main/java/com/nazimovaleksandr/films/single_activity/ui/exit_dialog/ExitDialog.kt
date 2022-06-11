@@ -1,4 +1,4 @@
-package com.nazimovaleksandr.films.exit_dialog
+package com.nazimovaleksandr.films.single_activity.ui.exit_dialog
 
 import android.app.AlertDialog
 import android.app.Dialog

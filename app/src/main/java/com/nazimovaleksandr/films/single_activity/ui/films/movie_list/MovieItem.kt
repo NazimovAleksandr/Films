@@ -1,4 +1,4 @@
-package com.nazimovaleksandr.films.main.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -9,7 +9,8 @@ data class MovieItem(
     val name: String,
     val details: String,
     var isFavorite: Boolean = false,
-    var isViewed: Boolean = false
+    var isViewed: Boolean = false,
+    var comment: String = ""
 ) : Serializable, Parcelable {
 
     override fun describeContents(): Int {

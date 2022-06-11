@@ -1,4 +1,4 @@
-package com.nazimovaleksandr.films.main.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
 
 interface MovieItemOnClickListener {
     fun onClickDetails(item: MovieItem)

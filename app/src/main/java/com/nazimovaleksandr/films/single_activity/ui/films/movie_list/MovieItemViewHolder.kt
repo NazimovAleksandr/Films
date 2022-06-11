@@ -1,4 +1,4 @@
-package com.nazimovaleksandr.films.main.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +32,7 @@ class MovieItemViewHolder(
             }
         }
 
-        binding.movieDetails.setOnClickListener {
+        binding.movieImage.setOnClickListener {
             onClickListener.onClickDetails(
                 item = movie
             )
