@@ -116,6 +116,14 @@ class SingleActivity : AppCompatActivity() {
                 binding.appBarSingle.fabFavorites.isVisible = isVisibleToolbar
             }
         }
+
+        supportFragmentManager.setFragmentResultListener(KEY_IS_LIKE, this) { _, bundle ->
+            bundle.apply {
+                (getSerializable(KEY_MOVIE) as MovieItem?)?.let {
+                    addAndRemoveMovieFavorite(it)
+                }
+            }
+        }
     }
 
     fun getFavoriteMovieList(): List<MovieItem> {
@@ -124,5 +132,17 @@ class SingleActivity : AppCompatActivity() {
 
     fun getMovieList(): List<MovieItem> {
         return movieList
+    }
+
+    private fun addAndRemoveMovieFavorite(movie: MovieItem) {
+        when (movie.isFavorite) {
+            true -> {
+                if (!favoriteMovieList.contains(movie)) {
+                    favoriteMovieList.add(movie)
+                }
+            }
+
+            false -> favoriteMovieList.remove(movie)
+        }
     }
 }
