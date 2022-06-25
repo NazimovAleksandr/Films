@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.FragmentMovieBinding
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItem
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemAdapter
 import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemOnClickListener
 import com.nazimovaleksandr.films.single_activity.SingleActivity
@@ -106,14 +106,14 @@ class MovieFragment : Fragment() {
             this
         ) { _, bundle ->
             bundle.apply {
-                val movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieItem
+                val movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieUI
                 setResultIsFavorite(movie)
             }
         }
     }
 
     private fun getMovieItemClickListener() = object : MovieItemOnClickListener {
-        override fun onClickDetails(item: MovieItem) {
+        override fun onClickDetails(item: MovieUI) {
             item.isViewed = true
 
             findNavController().navigate(
@@ -125,7 +125,7 @@ class MovieFragment : Fragment() {
             )
         }
 
-        override fun onClickIsFavorite(item: MovieItem, position: Int) {
+        override fun onClickIsFavorite(item: MovieUI, position: Int) {
             item.isFavorite = !item.isFavorite
 
             setResultIsFavorite(item)
@@ -140,7 +140,7 @@ class MovieFragment : Fragment() {
         }
     }
 
-    private fun showSnackbar(message: String, item: MovieItem, position: Int) {
+    private fun showSnackbar(message: String, item: MovieUI, position: Int) {
         snackbar = Snackbar
             .make(
                 binding.recyclerMovieItems,
@@ -173,7 +173,7 @@ class MovieFragment : Fragment() {
         }
     }
 
-    private fun setResultIsFavorite(movie: MovieItem) {
+    private fun setResultIsFavorite(movie: MovieUI) {
         requireActivity().supportFragmentManager.setFragmentResult(
             SingleActivity.KEY_IS_LIKE,
             Bundle().apply {

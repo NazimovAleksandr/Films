@@ -10,7 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.nazimovaleksandr.films.databinding.FragmentDetailsBinding
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItem
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 import com.nazimovaleksandr.films.single_activity.SingleActivity
 import com.nazimovaleksandr.films.single_activity.SingleActivity.Companion.KEY_TOOLBAR
 
@@ -29,10 +29,10 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var movie: MovieItem? = null
+        var movie: MovieUI? = null
 
         arguments?.apply {
-            movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieItem
+            movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieUI
 
             movie?.let { movie ->
                 binding.fullImage.setImageResource(movie.image)

@@ -1,10 +1,10 @@
-package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
+package com.nazimovaleksandr.films.single_activity.data.entities.ui
 
 import android.os.Parcel
 import android.os.Parcelable
 import java.io.Serializable
 
-data class MovieItem(
+data class MovieUI(
     val image: Int,
     val name: String,
     val details: String,
@@ -21,12 +21,12 @@ data class MovieItem(
         parcel?.writeSerializable(this)
     }
 
-    companion object CREATOR : Parcelable.Creator<MovieItem> {
-        override fun createFromParcel(parcel: Parcel): MovieItem {
-            return (parcel.readSerializable() as MovieItem)
+    companion object CREATOR : Parcelable.Creator<MovieUI> {
+        override fun createFromParcel(parcel: Parcel): MovieUI {
+            return (parcel.readSerializable() as MovieUI)
         }
 
-        override fun newArray(size: Int): Array<MovieItem?> {
+        override fun newArray(size: Int): Array<MovieUI?> {
             return arrayOfNulls(size)
         }
     }

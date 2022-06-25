@@ -5,13 +5,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.ItemMovieBinding
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 
 class MovieItemViewHolder(
     private val binding: ItemMovieBinding,
     private val onClickListener: MovieItemOnClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: MovieItem) {
+    fun bind(movie: MovieUI) {
         Glide
             .with(binding.movieImage.context)
             .load(movie.image)
@@ -47,7 +48,7 @@ class MovieItemViewHolder(
         }
     }
 
-    private fun setIsFavoriteData(movie: MovieItem) {
+    private fun setIsFavoriteData(movie: MovieUI) {
         binding.buttonFavorite.setImageResource(
             if (movie.isFavorite) {
                 R.drawable.ic_favorite_true
@@ -57,7 +58,7 @@ class MovieItemViewHolder(
         )
     }
 
-    private fun setIsViewedData(movie: MovieItem, context: Context) {
+    private fun setIsViewedData(movie: MovieUI, context: Context) {
         if (movie.isViewed) {
             binding.movieName.setTextColor(context.getColor(R.color.purple_200))
         }

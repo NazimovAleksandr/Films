@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.ActivitySingleBinding
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItem
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 
 class SingleActivity : AppCompatActivity() {
 
@@ -31,8 +31,8 @@ class SingleActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySingleBinding
 
-    private val favoriteMovieList = mutableListOf<MovieItem>()
-    private val movieList = mutableListOf<MovieItem>()
+    private val favoriteMovieList = mutableListOf<MovieUI>()
+    private val movieList = mutableListOf<MovieUI>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,28 +62,28 @@ class SingleActivity : AppCompatActivity() {
 
         repeat(4) {
             movieList.add(
-                MovieItem(
+                MovieUI(
                     image = R.drawable.image_1,
                     name = getString(R.string.film_name_1),
                     details = getString(R.string.film_details_1)
                 )
             )
             movieList.add(
-                MovieItem(
+                MovieUI(
                     image = R.drawable.image_2,
                     name = getString(R.string.film_name_2),
                     details = getString(R.string.film_details_2)
                 )
             )
             movieList.add(
-                MovieItem(
+                MovieUI(
                     image = R.drawable.image_3,
                     name = getString(R.string.film_name_3),
                     details = getString(R.string.film_details_3)
                 )
             )
             movieList.add(
-                MovieItem(
+                MovieUI(
                     image = R.drawable.image_4,
                     name = getString(R.string.film_name_4),
                     details = getString(R.string.film_details_4)
@@ -119,22 +119,22 @@ class SingleActivity : AppCompatActivity() {
 
         supportFragmentManager.setFragmentResultListener(KEY_IS_LIKE, this) { _, bundle ->
             bundle.apply {
-                (getSerializable(KEY_MOVIE) as MovieItem?)?.let {
+                (getSerializable(KEY_MOVIE) as MovieUI?)?.let {
                     addAndRemoveMovieFavorite(it)
                 }
             }
         }
     }
 
-    fun getFavoriteMovieList(): List<MovieItem> {
+    fun getFavoriteMovieList(): List<MovieUI> {
         return favoriteMovieList
     }
 
-    fun getMovieList(): List<MovieItem> {
+    fun getMovieList(): List<MovieUI> {
         return movieList
     }
 
-    private fun addAndRemoveMovieFavorite(movie: MovieItem) {
+    private fun addAndRemoveMovieFavorite(movie: MovieUI) {
         when (movie.isFavorite) {
             true -> {
                 if (!favoriteMovieList.contains(movie)) {
