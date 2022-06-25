@@ -2,6 +2,7 @@ package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.ItemMovieBinding
 
@@ -11,7 +12,12 @@ class MovieItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(movie: MovieItem) {
-        binding.movieImage.setImageResource(movie.image)
+        Glide
+            .with(binding.movieImage.context)
+            .load(movie.image)
+            .placeholder(R.drawable.ic_films)
+            .error(R.drawable.ic_error)
+            .into(binding.movieImage)
 
         binding.movieName.apply {
             text = movie.name
