@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -12,12 +13,16 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.ActivitySingleBinding
+import com.nazimovaleksandr.films.single_activity.data.DataManager
 import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SingleActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_MOVIE = "KEY_MOVIE"
+        const val KEY_FAVORITE_MOVIE = "KEY_FAVORITE_MOVIE"
         const val KEY_FAVORITES_MOVIE = "KEY_FAVORITES_MOVIE"
 
         const val KEY_DETAILS = "KEY_DETAILS"
@@ -30,9 +35,6 @@ class SingleActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySingleBinding
-
-    private val favoriteMovieList = mutableListOf<MovieUI>()
-    private val movieList = mutableListOf<MovieUI>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,37 +60,6 @@ class SingleActivity : AppCompatActivity() {
 
         binding.appBarSingle.fabFavorites.setOnClickListener {
             binding.navView.menu.performIdentifierAction(R.id.nav_favorites, 0)
-        }
-
-        repeat(4) {
-            movieList.add(
-                MovieUI(
-                    image = R.drawable.image_1,
-                    name = getString(R.string.film_name_1),
-                    details = getString(R.string.film_details_1)
-                )
-            )
-            movieList.add(
-                MovieUI(
-                    image = R.drawable.image_2,
-                    name = getString(R.string.film_name_2),
-                    details = getString(R.string.film_details_2)
-                )
-            )
-            movieList.add(
-                MovieUI(
-                    image = R.drawable.image_3,
-                    name = getString(R.string.film_name_3),
-                    details = getString(R.string.film_details_3)
-                )
-            )
-            movieList.add(
-                MovieUI(
-                    image = R.drawable.image_4,
-                    name = getString(R.string.film_name_4),
-                    details = getString(R.string.film_details_4)
-                )
-            )
         }
 
         setResultListeners()
@@ -120,29 +91,11 @@ class SingleActivity : AppCompatActivity() {
         supportFragmentManager.setFragmentResultListener(KEY_IS_LIKE, this) { _, bundle ->
             bundle.apply {
                 (getSerializable(KEY_MOVIE) as MovieUI?)?.let {
-                    addAndRemoveMovieFavorite(it)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        DataManager.updateMovie(it)
+                    }
                 }
             }
-        }
-    }
-
-    fun getFavoriteMovieList(): List<MovieUI> {
-        return favoriteMovieList
-    }
-
-    fun getMovieList(): List<MovieUI> {
-        return movieList
-    }
-
-    private fun addAndRemoveMovieFavorite(movie: MovieUI) {
-        when (movie.isFavorite) {
-            true -> {
-                if (!favoriteMovieList.contains(movie)) {
-                    favoriteMovieList.add(movie)
-                }
-            }
-
-            false -> favoriteMovieList.remove(movie)
         }
     }
 }

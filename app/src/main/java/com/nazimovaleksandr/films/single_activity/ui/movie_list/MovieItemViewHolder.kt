@@ -1,6 +1,6 @@
-package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.movie_list
 
-import android.content.Context
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nazimovaleksandr.films.R
@@ -15,23 +15,21 @@ class MovieItemViewHolder(
     fun bind(movie: MovieUI) {
         Glide
             .with(binding.movieImage.context)
-            .load(movie.image)
-            .placeholder(R.drawable.ic_films)
-            .error(R.drawable.ic_error)
+            .load(movie.preview)
+            .placeholder(R.drawable.ic_load)
+            .error(R.drawable.ic_error_loading)
             .into(binding.movieImage)
 
-        binding.movieName.apply {
-            text = movie.name
-
-            setIsViewedData(movie, context)
-        }
+        binding.movieYear.text = movie.year.toString()
+        binding.viewed.isVisible = movie.isViewed
+        binding.movieName.text = movie.name
 
         binding.buttonFavorite.apply {
             setIsFavoriteData(movie)
 
             setOnClickListener {
                 onClickListener.onClickIsFavorite(
-                    item = movie,
+                    movie = movie,
                     position = adapterPosition
                 )
 
@@ -41,10 +39,8 @@ class MovieItemViewHolder(
 
         binding.movieImage.setOnClickListener {
             onClickListener.onClickDetails(
-                item = movie
+                movie = movie
             )
-
-            setIsViewedData(movie, it.context)
         }
     }
 
@@ -56,11 +52,5 @@ class MovieItemViewHolder(
                 R.drawable.ic_favorite_false
             }
         )
-    }
-
-    private fun setIsViewedData(movie: MovieUI, context: Context) {
-        if (movie.isViewed) {
-            binding.movieName.setTextColor(context.getColor(R.color.purple_200))
-        }
     }
 }

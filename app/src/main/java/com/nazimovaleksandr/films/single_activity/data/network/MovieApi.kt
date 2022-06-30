@@ -44,11 +44,9 @@ class MovieApi {
         service = retrofit.create(MovieService::class.java)
     }
 
-    fun getMoviesByYear(period: String, page: String, callback: Callback<MovieList>) {
+    fun getMovies(page: String, callback: Callback<MovieList>) {
         service.getMovieList(
             token = TOKEN,
-            search = period,
-            field = "year",
             page = page
         ).enqueue(callback)
     }

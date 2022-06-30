@@ -17,6 +17,9 @@
     <string name="text_is_favorite_true">Movie added to favorites list</string>
     <string name="text_is_favorite_false">Movie removed from favorites list</string>
 
+    <string name="movie_loading_error">Loading error</string>
+    <string name="refresh">Refresh</string>
+
     <string name="film_name_1">Fast and Furious 1</string>
     <string name="film_name_2">Fast and Furious 2</string>
     <string name="film_name_3">Fast and Furious 3</string>

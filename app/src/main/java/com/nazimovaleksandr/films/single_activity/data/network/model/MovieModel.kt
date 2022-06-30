@@ -3,6 +3,8 @@ package com.nazimovaleksandr.films.single_activity.data.network.model
 import com.google.gson.annotations.SerializedName
 
 data class MovieModel(
+    @SerializedName(value = "id")
+    val id: Int,
     @SerializedName(value = "name")
     val name: String,
     @SerializedName(value = "description")

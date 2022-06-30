@@ -1,4 +1,4 @@
-package com.nazimovaleksandr.films.single_activity.ui.films.movie_list
+package com.nazimovaleksandr.films.single_activity.ui.movie_list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI

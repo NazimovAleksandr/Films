@@ -1,17 +1,32 @@
 package com.nazimovaleksandr.films.single_activity.ui.favorites
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.nazimovaleksandr.films.single_activity.data.DataManager
 import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
-import com.nazimovaleksandr.films.single_activity.SingleActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class FavoriteViewModel : ViewModel() {
+class FavoriteViewModel(
+    private val dataManager: DataManager
+) : ViewModel() {
+    val favoriteMovieList: LiveData<List<MovieUI>>? = dataManager.getFavoriteMovieList()?.asLiveData()
 
-    private var _favoriteMovieList = MutableLiveData<List<MovieUI>>()
-    val favoriteMovieList: LiveData<List<MovieUI>> = _favoriteMovieList
+    fun onClickIsFavorite(movie: MovieUI) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (movie.isFavorite) {
+                dataManager.insertFavoriteMovie(movie)
+            } else {
+                dataManager.deleteFavoriteMovie(movie)
+            }
+        }
+    }
 
-    fun loadMovieList(activity: SingleActivity) {
-        _favoriteMovieList.value = activity.getFavoriteMovieList()
+    fun onClickDetails(movie: MovieUI) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataManager.updateFavoriteMovie(movie)
+        }
     }
 }

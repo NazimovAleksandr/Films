@@ -8,23 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.FragmentFavoriteBinding
-import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemAdapter
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemOnClickListener
 import com.nazimovaleksandr.films.single_activity.SingleActivity
-import java.io.Serializable
+import com.nazimovaleksandr.films.single_activity.data.DataManager
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
+import com.nazimovaleksandr.films.single_activity.ui.movie_list.MovieItemAdapter
+import com.nazimovaleksandr.films.single_activity.ui.movie_list.MovieItemOnClickListener
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: FavoriteViewModel by viewModels {
+        FavoriteViewModelFactory(DataManager)
+    }
 
     private var adapter: MovieItemAdapter? = null
 
@@ -87,43 +91,41 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val viewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
-
-        viewModel.favoriteMovieList.observe(viewLifecycleOwner) { movieList ->
+        viewModel.favoriteMovieList?.observe(viewLifecycleOwner) { movieList ->
             adapter = MovieItemAdapter(
-                movieList,
                 getMovieItemClickListener()
             )
 
+            adapter?.setMovieList(movieList)
+
             binding.recyclerMovieItems.adapter = adapter
         }
-
-        viewModel.loadMovieList(requireActivity() as SingleActivity)
     }
 
     private fun getMovieItemClickListener() = object : MovieItemOnClickListener {
-        override fun onClickDetails(item: MovieUI) {
-            item.isViewed = true
+        override fun onClickDetails(movie: MovieUI) {
+            movie.isViewed = true
+            viewModel.onClickDetails(movie)
 
             findNavController().navigate(
                 R.id.action_nav_favorites_to_detailsFragment,
 
                 Bundle().apply {
-                    putSerializable(SingleActivity.KEY_MOVIE, item as Serializable)
+                    putInt(SingleActivity.KEY_FAVORITE_MOVIE, movie.id)
                 }
             )
         }
 
-        override fun onClickIsFavorite(item: MovieUI, position: Int) {
-            item.isFavorite = !item.isFavorite
-            adapter?.removeItem(item)
-            setResultIsFavorite(item)
+        override fun onClickIsFavorite(movie: MovieUI, position: Int) {
+            movie.isFavorite = !movie.isFavorite
+            adapter?.removeItem(movie)
+            viewModel.onClickIsFavorite(movie)
 
-            showSnackbar(getString(R.string.text_is_favorite_false), item, position)
+            showSnackbar(getString(R.string.text_is_favorite_false), movie, position)
         }
     }
 
-    private fun showSnackbar(message: String, item: MovieUI, position: Int) {
+    private fun showSnackbar(message: String, movie: MovieUI, position: Int) {
         snackbar = Snackbar
             .make(
                 binding.recyclerMovieItems,
@@ -134,9 +136,9 @@ class FavoriteFragment : Fragment() {
             .setAction(
                 android.R.string.cancel
             ) {
-                item.isFavorite = !item.isFavorite
-                setResultIsFavorite(item)
-                adapter?.addItem(item, position)
+                movie.isFavorite = !movie.isFavorite
+                viewModel.onClickIsFavorite(movie)
+                adapter?.addItem(movie, position)
             }
 
         snackbar?.show()
@@ -154,14 +156,5 @@ class FavoriteFragment : Fragment() {
             outRect.right = 2
             outRect.bottom = 4
         }
-    }
-
-    private fun setResultIsFavorite(movie: MovieUI) {
-        requireActivity().supportFragmentManager.setFragmentResult(
-            SingleActivity.KEY_IS_LIKE,
-            Bundle().apply {
-                putSerializable(SingleActivity.KEY_MOVIE, movie)
-            }
-        )
     }
 }

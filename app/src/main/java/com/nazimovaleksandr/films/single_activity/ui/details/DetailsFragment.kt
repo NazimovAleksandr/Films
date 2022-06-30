@@ -8,15 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.FragmentDetailsBinding
-import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 import com.nazimovaleksandr.films.single_activity.SingleActivity
 import com.nazimovaleksandr.films.single_activity.SingleActivity.Companion.KEY_TOOLBAR
+import com.nazimovaleksandr.films.single_activity.data.DataManager
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(DataManager)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,56 +37,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var movie: MovieUI? = null
-
-        arguments?.apply {
-            movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieUI
-
-            movie?.let { movie ->
-                binding.fullImage.setImageResource(movie.image)
-                binding.fullText.text = movie.details
-                binding.comment.setText(movie.comment)
-                binding.checkbox.isChecked = movie.isFavorite
-            }
-        }
-
-        binding.apply {
-            buttonEmail.setOnClickListener {
-                sendLink("mailto:")
-            }
-            buttonSms.setOnClickListener {
-                sendLink("sms:")
-            }
-            buttonMessage.setOnClickListener {
-                sendLink("")
-            }
-        }
-
-        binding.checkbox.setOnCheckedChangeListener { _, isLike ->
-            movie?.isFavorite = isLike
-
-            setFragmentResult(
-                SingleActivity.KEY_DETAILS,
-                Bundle().apply {
-                    putSerializable(SingleActivity.KEY_MOVIE, movie as java.io.Serializable)
-                }
-            )
-        }
-
-        binding.comment.addTextChangedListener {
-            movie?.comment = it.toString()
-
-            setFragmentResult(
-                SingleActivity.KEY_DETAILS,
-                Bundle().apply {
-                    putSerializable(SingleActivity.KEY_MOVIE, movie as java.io.Serializable)
-                }
-            )
-        }
-
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressed()
-        }
+        initListeners()
+        initViewModel()
     }
 
     override fun onStart() {
@@ -93,6 +53,9 @@ class DetailsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+
+        viewModel.saveMovie()
+
         requireActivity().supportFragmentManager.setFragmentResult(
             KEY_TOOLBAR,
             Bundle().apply {
@@ -104,6 +67,65 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initListeners() {
+        binding.apply {
+            buttonEmail.setOnClickListener {
+                sendLink("mailto:")
+            }
+            buttonSms.setOnClickListener {
+                sendLink("sms:")
+            }
+            buttonMessage.setOnClickListener {
+                sendLink("")
+            }
+        }
+
+        binding.checkbox.setOnCheckedChangeListener { _, isLike ->
+            viewModel.onFavoriteChanged(isLike)
+        }
+
+        binding.comment.addTextChangedListener {
+            viewModel.onCommentChanged(it.toString())
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
+    private fun initViewModel() {
+        viewModel.movie.observe(viewLifecycleOwner) {
+            it?.let { movie ->
+                binding.toolbar.title = movie.name ?: ""
+                binding.fullText.text = movie.details
+                binding.comment.setText(movie.comment)
+                binding.checkbox.isChecked = movie.isFavorite
+
+                Glide
+                    .with(binding.fullImage.context)
+                    .load(movie.image)
+                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 3)))
+                    .placeholder(R.drawable.ic_load)
+                    .error(R.drawable.ic_error_loading)
+                    .into(binding.fullImage)
+
+                Glide
+                    .with(binding.fullImageMini.context)
+                    .load(movie.image)
+                    .placeholder(R.drawable.ic_load)
+                    .error(R.drawable.ic_error_loading)
+                    .into(binding.fullImageMini)
+            }
+        }
+
+        arguments?.apply {
+            viewModel.loadMovie(
+                getInt(SingleActivity.KEY_MOVIE),
+                getInt(SingleActivity.KEY_FAVORITE_MOVIE)
+            )
+        }
     }
 
     private fun sendLink(data: String) {

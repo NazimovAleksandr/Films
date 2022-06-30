@@ -17,6 +17,9 @@
     <string name="text_is_favorite_true">Фильм добавлен в список избранных</string>
     <string name="text_is_favorite_false">Фильм удалён из списка избранных</string>
 
+    <string name="movie_loading_error">Ошибка загрузки</string>
+    <string name="refresh">Обновить</string>
+
     <string name="film_name_1">Форсаж 1</string>
     <string name="film_name_2">Форсаж 2</string>
     <string name="film_name_3">Форсаж 3</string>

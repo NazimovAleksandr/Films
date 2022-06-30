@@ -4,32 +4,41 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.nazimovaleksandr.films.R
 import com.nazimovaleksandr.films.databinding.FragmentMovieBinding
-import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemAdapter
-import com.nazimovaleksandr.films.single_activity.ui.films.movie_list.MovieItemOnClickListener
 import com.nazimovaleksandr.films.single_activity.SingleActivity
+import com.nazimovaleksandr.films.single_activity.data.DataManager
+import com.nazimovaleksandr.films.single_activity.data.entities.ui.MovieUI
 import com.nazimovaleksandr.films.single_activity.ui.exit_dialog.ExitDialog
-import java.io.Serializable
+import com.nazimovaleksandr.films.single_activity.ui.movie_list.MovieItemAdapter
+import com.nazimovaleksandr.films.single_activity.ui.movie_list.MovieItemOnClickListener
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 class MovieFragment : Fragment() {
 
     private var _binding: FragmentMovieBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: MovieViewModel
+    private val viewModel: MovieViewModel by viewModels {
+        MovieViewModelFactory(DataManager)
+    }
+
+    private var movieAdapter: MovieItemAdapter? = null
 
     private var snackbar: Snackbar? = null
 
@@ -55,7 +64,6 @@ class MovieFragment : Fragment() {
 
         initView()
         initViewModel()
-        setResultListeners()
 
         return binding.root
     }
@@ -84,63 +92,115 @@ class MovieFragment : Fragment() {
             addItemDecoration(itemDecoration)
 
             setPadding(2)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val lastMovie =
+                        recyclerView.findViewHolderForAdapterPosition((adapter?.itemCount ?: 0) - 1)
+
+                    if (lastMovie != null) {
+                        binding.loaderNextPage.isVisible = true
+                        viewModel.loadNextPage()
+                    }
+                }
+            })
         }
+
+        binding.swipeRefresh.apply {
+            setOnRefreshListener {
+                binding.swipeRefresh.isRefreshing = false
+                binding.loader.isVisible = true
+                viewModel.loadMovieList()
+            }
+        }
+
+        binding.loader.setOnClickListener {}
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[MovieViewModel::class.java]
+        viewModel.movieList?.observe(viewLifecycleOwner) { movieList ->
+            binding.loader.isVisible = movieList.isEmpty()
 
-        viewModel.movieList.observe(viewLifecycleOwner) { movieList ->
-            binding.recyclerMovieItems.adapter = MovieItemAdapter(
-                movieList,
+            if (movieList.isEmpty()) {
+                viewModel.loadMovieList()
+            }
+
+            movieAdapter = movieAdapter ?: MovieItemAdapter(
                 getMovieItemClickListener()
             )
+
+            when (viewModel.currentPage) {
+                0 -> movieAdapter?.setMovieList(movieList)
+
+                else -> {
+                    binding.loaderNextPage.isVisible = false
+                    movieAdapter?.addMovieList(movieList)
+                }
+            }
+
+            if (binding.recyclerMovieItems.adapter == null) {
+                binding.recyclerMovieItems.adapter = movieAdapter
+            }
         }
 
-        viewModel.loadMovieList(requireActivity() as SingleActivity)
-    }
+        lifecycleScope.launchWhenStarted {
+            viewModel.isShowError.onEach {
+                if (it) {
+                    val snackbar = Snackbar
+                        .make(
+                            binding.recyclerMovieItems,
+                            getString(R.string.movie_loading_error),
+                            Snackbar.LENGTH_INDEFINITE
+                        )
+                        .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                        .setAction(
+                            R.string.refresh
+                        ) {
+                            binding.loader.isVisible = true
+                            viewModel.refresh()
+                        }
 
-    private fun setResultListeners() {
-        parentFragmentManager.setFragmentResultListener(
-            SingleActivity.KEY_DETAILS,
-            this
-        ) { _, bundle ->
-            bundle.apply {
-                val movie = getSerializable(SingleActivity.KEY_MOVIE) as MovieUI
-                setResultIsFavorite(movie)
-            }
+                    snackbar.show()
+
+                    binding.loader.isVisible = false
+                    binding.loaderNextPage.isVisible = false
+                }
+            }.collect()
         }
     }
 
     private fun getMovieItemClickListener() = object : MovieItemOnClickListener {
-        override fun onClickDetails(item: MovieUI) {
-            item.isViewed = true
+        override fun onClickDetails(movie: MovieUI) {
+            movie.isViewed = true
+            viewModel.onClickDetails(movie)
 
             findNavController().navigate(
                 R.id.action_nav_movie_to_detailsFragment,
 
                 Bundle().apply {
-                    putSerializable(SingleActivity.KEY_MOVIE, item as Serializable)
+                    putInt(SingleActivity.KEY_MOVIE, movie.id)
                 }
             )
         }
 
-        override fun onClickIsFavorite(item: MovieUI, position: Int) {
-            item.isFavorite = !item.isFavorite
+        override fun onClickIsFavorite(movie: MovieUI, position: Int) {
+            movie.isFavorite = !movie.isFavorite
 
-            setResultIsFavorite(item)
+            viewModel.onClickIsFavorite(movie)
 
-            val text = if (item.isFavorite) {
+            val text = if (movie.isFavorite) {
                 getString(R.string.text_is_favorite_true)
             } else {
                 getString(R.string.text_is_favorite_false)
             }
 
-            showSnackbar(text, item, position)
+            showSnackbar(text, movie, position)
         }
     }
 
-    private fun showSnackbar(message: String, item: MovieUI, position: Int) {
+    private fun showSnackbar(message: String, movie: MovieUI, position: Int) {
         snackbar = Snackbar
             .make(
                 binding.recyclerMovieItems,
@@ -151,8 +211,8 @@ class MovieFragment : Fragment() {
             .setAction(
                 android.R.string.cancel
             ) {
-                item.isFavorite = !item.isFavorite
-                setResultIsFavorite(item)
+                movie.isFavorite = !movie.isFavorite
+                viewModel.onClickIsFavorite(movie)
                 binding.recyclerMovieItems.adapter?.notifyItemChanged(position)
             }
 
@@ -171,14 +231,5 @@ class MovieFragment : Fragment() {
             outRect.right = 2
             outRect.bottom = 4
         }
-    }
-
-    private fun setResultIsFavorite(movie: MovieUI) {
-        requireActivity().supportFragmentManager.setFragmentResult(
-            SingleActivity.KEY_IS_LIKE,
-            Bundle().apply {
-                putSerializable(SingleActivity.KEY_MOVIE, movie)
-            }
-        )
     }
 }
